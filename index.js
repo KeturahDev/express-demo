@@ -1,11 +1,14 @@
 const Joi = require('joi');
 const express = require('express');
-const app = express();
+const logger = require('./logger')
 // if something relies on a dependency, put it bellow that dependency
 
-// adds a piece of middleware
-// allows resps/reqs to be read in json format
+const app = express();
+
+// Middleware
 app.use(express.json())
+
+app.use(logger)
 
 const courses = [{
     id: 0,
