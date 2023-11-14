@@ -9,6 +9,7 @@ Keturah Howard, November 13 2023
   - GET: to read it
   - DELETE: to delete it 
 - Express is a simple, minimalistic and lightweight framework for building web servers
+- You should never trust data sent by the client. Always validate! Use Joi package to perform input validation. 
 
 ### Anatomy of cunstructing an endpoint
 
