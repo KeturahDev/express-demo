@@ -35,3 +35,7 @@ const port = process.env.PORT || 300002;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 ```
 
+### Environment Variables:
+- `process.env.NODE_ENV` returns undefined if not set
+- `app.get('env')` returns 'development' if not set
+- Want to run middleware for dev experience only on develop to improve production performance

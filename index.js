@@ -1,12 +1,44 @@
+const startupDebug = require('debug')('app:startup')
+const dbDebug = require('debug')('app:db')
+// const config = require('config')
+const morgan = require('morgan');
+const helmet = require('helmet');
 const Joi = require('joi');
 const express = require('express');
 const logger = require('./logger')
-// if something relies on a dependency, put it bellow that dependency
 
 const app = express();
+// if something relies on a dependency, put it bellow that dependency
+
+//Configuration accessing example:
+// console.log('Application Name: ', config.get('name'));
+// console.log('Mail Sever: ', config.get('mail.host'));
+
+//db work
+dbDebug('debug work..')
+
+app.set('view engine', 'pug')
+// express internally loads pug without needing to require it
+app.set('views', './views'); //default
 
 // Middleware
 app.use(express.json())
+// allows us to use url encoded req body
+app.use(express.urlencoded({extended: true}))
+//allows is to serve static content
+app.use(express.static('public'))
+app.use(helmet())
+
+console.log("ENV = ", app.get('env'))
+
+if (app.get('env') === 'development') {
+  app.use(morgan('tiny'));
+  startupDebug('Morgan Enabled...')
+  //^ to trigger debug to show in the terminal:
+  // export DEBUG=app:startup
+  // multiple: export DEBUG=app:startup,app:db
+  // all name spaces: export DEBUG=app:*
+}
 
 app.use(logger)
 
@@ -37,7 +69,9 @@ function validateCourse(course) {
 
 // homepage
 app.get('/', (req, res) => {
-  res.send('Hello Kitty');
+  res.render('index', {title: "Homepage", message: "Hello Kitty"})
+  //^ with pug templating engine
+  // res.send('Hello Kitty');
 });
 
 // get all courses
